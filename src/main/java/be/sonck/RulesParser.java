@@ -1,9 +1,10 @@
 package be.sonck;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
@@ -16,12 +17,14 @@ public class RulesParser {
 
     private static final String CONTENTS = "Contents";
     private static final String GLOSSARY = "Glossary";
+    public static final String CREDITS = "Credits";
 
     private final Reader reader;
 
     private boolean initialized;
     private String effectiveDate;
-    private List<String> tableOfContents = new ArrayList<>();
+    private Map<String, String> rulesOverview = new LinkedHashMap<>();
+    private Map<String, String> rules = new LinkedHashMap<>();
 
 
     public RulesParser(Reader reader) {
@@ -34,10 +37,16 @@ public class RulesParser {
         return effectiveDate;
     }
 
-    public Iterable<String> getTableOfContents() {
+    public Map<String, String> getRulesOverview() {
         initialize();
 
-        return tableOfContents;
+        return rulesOverview;
+    }
+
+    public Map<String, String> getRules() {
+        initialize();
+
+        return rules;
     }
 
     private void initialize() {
@@ -64,11 +73,20 @@ public class RulesParser {
         Iterator<String> iterator = lines.iterator();
 
         readEffectiveDate(iterator);
-        readTableOfContents(iterator);
+        readRulesOverview(iterator);
+        readRules(iterator);
     }
 
-    private void readTableOfContents(Iterator<String> iterator) {
-        skipUntil(iterator, CONTENTS);
+    private void readRules(Iterator<String> iterator) {
+        readRulesIntoMap(iterator, CREDITS, rules);
+    }
+
+    private void readRulesOverview(Iterator<String> iterator) {
+        readRulesIntoMap(iterator, CONTENTS, rulesOverview);
+    }
+
+    private void readRulesIntoMap(Iterator<String> iterator, String skipUntil, Map<String, String> targetMap) {
+        skipUntil(iterator, skipUntil);
 
         while (iterator.hasNext()) {
             String line = iterator.next();
@@ -76,8 +94,16 @@ public class RulesParser {
             if (isEmpty(line)) continue;
             if (GLOSSARY.equals(line)) break;
 
-            tableOfContents.add(line);
+            targetMap.put(determineKey(line), determineValue(line));
         }
+    }
+
+    private String determineValue(String line) {
+        return line.substring(line.indexOf(' ') + 1);
+    }
+
+    private String determineKey(String line) {
+        return line.substring(0, line.indexOf(' '));
     }
 
     private void readEffectiveDate(Iterator<String> iterator) {
