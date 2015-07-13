@@ -2,9 +2,7 @@ package be.sonck;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
@@ -25,6 +23,7 @@ public class RulesParser {
     private String effectiveDate;
     private Map<String, String> rulesOverview = new LinkedHashMap<>();
     private Map<String, String> rules = new LinkedHashMap<>();
+    private Map<String, Iterable<String>> glossary = new TreeMap<>();
 
 
     public RulesParser(Reader reader) {
@@ -47,6 +46,12 @@ public class RulesParser {
         initialize();
 
         return rules;
+    }
+
+    public Map<String, Iterable<String>> getGlossary() {
+        initialize();
+
+        return glossary;
     }
 
     private void initialize() {
@@ -75,6 +80,35 @@ public class RulesParser {
         readEffectiveDate(iterator);
         readRulesOverview(iterator);
         readRules(iterator);
+        readGlosssary(iterator);
+    }
+
+    private void readGlosssary(Iterator<String> iterator) {
+        while (iterator.hasNext()) {
+            String line = iterator.next();
+
+            if (isEmpty(line)) continue;
+            if (CREDITS.equals(line)) break;
+
+            String key = line;
+            List<String> values = readGlossaryValues(iterator);
+
+            glossary.put(key, values);
+        }
+    }
+
+    private List<String> readGlossaryValues(Iterator<String> iterator) {
+        List<String> values = new ArrayList<>();
+
+        while (iterator.hasNext()) {
+            String line = iterator.next();
+
+            if (isEmpty(line)) break;
+
+            values.add(line);
+        }
+
+        return values;
     }
 
     private void readRules(Iterator<String> iterator) {
