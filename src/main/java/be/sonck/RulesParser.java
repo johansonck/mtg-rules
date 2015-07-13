@@ -1,9 +1,6 @@
 package be.sonck;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,15 +14,18 @@ public class RulesParser {
 
     private static final Object LOCK = new Object();
 
-    private final InputStream inputStream;
+    private static final String CONTENTS = "Contents";
+    private static final String GLOSSARY = "Glossary";
+
+    private final Reader reader;
 
     private boolean initialized;
     private String effectiveDate;
-    private List<String> tableOfContents = new ArrayList<String>();
+    private List<String> tableOfContents = new ArrayList<>();
 
 
-    public RulesParser(InputStream inputStream) {
-        this.inputStream = inputStream;
+    public RulesParser(Reader reader) {
+        this.reader = reader;
     }
 
     public String getEffectiveDate() {
@@ -52,16 +52,12 @@ public class RulesParser {
     }
 
     private void parseFile() {
-        try (LineReader reader = createLineReader()) {
-            parseLines(reader);
+        try (LineReader lineReader = new LineReader(reader)) {
+            parseLines(lineReader);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private LineReader createLineReader() {
-        return new LineReader(new InputStreamReader(inputStream, Charset.forName("windows-1252")));
     }
 
     private void parseLines(Iterable<String> lines) throws IOException {
@@ -72,13 +68,13 @@ public class RulesParser {
     }
 
     private void readTableOfContents(Iterator<String> iterator) {
-        skipUntil(iterator, "Contents");
+        skipUntil(iterator, CONTENTS);
 
         while (iterator.hasNext()) {
             String line = iterator.next();
 
             if (isEmpty(line)) continue;
-            if ("Glossary".equals(line)) break;
+            if (GLOSSARY.equals(line)) break;
 
             tableOfContents.add(line);
         }
