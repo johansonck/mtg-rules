@@ -21,7 +21,6 @@ public class RulesParser {
 
     private boolean initialized;
     private String effectiveDate;
-    private Map<String, String> rulesOverview = new LinkedHashMap<>();
     private Map<String, String> rules = new LinkedHashMap<>();
     private Map<String, Iterable<String>> glossary = new TreeMap<>();
 
@@ -34,12 +33,6 @@ public class RulesParser {
         initialize();
 
         return effectiveDate;
-    }
-
-    public Map<String, String> getRulesOverview() {
-        initialize();
-
-        return rulesOverview;
     }
 
     public Map<String, String> getRules() {
@@ -78,7 +71,6 @@ public class RulesParser {
         Iterator<String> iterator = lines.iterator();
 
         readEffectiveDate(iterator);
-        readRulesOverview(iterator);
         readRules(iterator);
         readGlosssary(iterator);
     }
@@ -112,15 +104,7 @@ public class RulesParser {
     }
 
     private void readRules(Iterator<String> iterator) {
-        readRulesIntoMap(iterator, CREDITS, rules);
-    }
-
-    private void readRulesOverview(Iterator<String> iterator) {
-        readRulesIntoMap(iterator, CONTENTS, rulesOverview);
-    }
-
-    private void readRulesIntoMap(Iterator<String> iterator, String skipUntil, Map<String, String> targetMap) {
-        skipUntil(iterator, skipUntil);
+        skipUntil(iterator, CREDITS);
 
         while (iterator.hasNext()) {
             String line = iterator.next();
@@ -128,7 +112,7 @@ public class RulesParser {
             if (isEmpty(line)) continue;
             if (GLOSSARY.equals(line)) break;
 
-            targetMap.put(determineKey(line), determineValue(line));
+            rules.put(determineKey(line), determineValue(line));
         }
     }
 

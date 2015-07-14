@@ -27,24 +27,6 @@ public class RulesParserTest {
     }
 
     @Test
-    public void getRulesOverview() {
-        Map<String, String> map = rulesParser.getRulesOverview();
-
-        assertNotNull(map);
-
-        Set<String> keys = map.keySet();
-        Iterator<String> keyIterator = keys.iterator();
-
-        assertTrue(keyIterator.hasNext());
-        validate(map, keyIterator.next(), "1.", "Game Concepts");
-
-        assertTrue(keyIterator.hasNext());
-        validate(map, keyIterator.next(), "100.", "General");
-
-        validate(map, Iterators.getLast(keyIterator), "905.", "Conspiracy Draft");
-    }
-
-    @Test
     public void getRules() {
         Map<String, String> map = rulesParser.getRules();
 

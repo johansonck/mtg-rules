@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 /**
  * Created by johansonck on 12/07/15.
  */
+@Deprecated
 public class RulesResourceReader extends BufferedInputStreamSourceReader {
 
     public RulesResourceReader(RulesResourceLoader rulesResourceLoader) throws IOException {
