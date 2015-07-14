@@ -13,7 +13,6 @@ public class RulesParser {
 
     private static final Object LOCK = new Object();
 
-    private static final String CONTENTS = "Contents";
     private static final String GLOSSARY = "Glossary";
     public static final String CREDITS = "Credits";
 
