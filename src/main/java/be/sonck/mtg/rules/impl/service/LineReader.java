@@ -1,4 +1,4 @@
-package be.sonck;
+package be.sonck.mtg.rules.impl.service;
 
 import java.io.BufferedReader;
 import java.io.Closeable;

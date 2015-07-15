@@ -3,9 +3,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <!-- Bean declarations go here -->
-    <bean id="rulesResourceLoader" class="be.sonck.RulesResourceLoader"/>
+    <bean id="rulesResourceLoader" class="be.sonck.mtg.rules.impl.service.RulesResourceLoader"/>
 
-    <bean id="rulesResourceReader" class="be.sonck.RulesResourceReader">
+    <bean id="rulesResourceReader" class="be.sonck.mtg.rules.impl.service.RulesResourceReader">
         <constructor-arg ref="rulesResourceLoader"/>
     </bean>
 
@@ -14,7 +14,7 @@
         <constructor-arg value="windows-1252" type="java.lang.String"/>
     </bean>
 
-    <bean id="rulesParser" class="be.sonck.RulesParser">
+    <bean id="rulesParser" class="be.sonck.mtg.rules.impl.service.RulesParser">
         <constructor-arg ref="rulesReader"/>
     </bean>
 

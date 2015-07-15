@@ -1,4 +1,4 @@
-package be.sonck;
+package be.sonck.mtg.rules.impl.service;
 
 import com.google.common.collect.Iterators;
 import org.junit.Test;

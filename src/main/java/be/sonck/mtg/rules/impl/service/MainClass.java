@@ -1,4 +1,4 @@
-package be.sonck;
+package be.sonck.mtg.rules.impl.service;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

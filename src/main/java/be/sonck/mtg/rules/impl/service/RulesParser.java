@@ -1,4 +1,4 @@
-package be.sonck;
+package be.sonck.mtg.rules.impl.service;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -11,53 +11,31 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
  */
 public class RulesParser {
 
-    private static final Object LOCK = new Object();
-
     private static final String GLOSSARY = "Glossary";
     public static final String CREDITS = "Credits";
 
-    private final Reader reader;
-
-    private boolean initialized;
     private String effectiveDate;
     private Map<String, String> rules = new LinkedHashMap<>();
     private Map<String, Iterable<String>> glossary = new TreeMap<>();
 
 
     public RulesParser(Reader reader) {
-        this.reader = reader;
+        initialize(reader);
     }
 
     public String getEffectiveDate() {
-        initialize();
-
         return effectiveDate;
     }
 
     public Map<String, String> getRules() {
-        initialize();
-
         return rules;
     }
 
     public Map<String, Iterable<String>> getGlossary() {
-        initialize();
-
         return glossary;
     }
 
-    private void initialize() {
-        if (initialized) return;
-
-        synchronized (LOCK) {
-            if (initialized) return;
-
-            parseFile();
-            initialized = true;
-        }
-    }
-
-    private void parseFile() {
+    private void initialize(Reader reader) {
         try (LineReader lineReader = new LineReader(reader)) {
             parseLines(lineReader);
 

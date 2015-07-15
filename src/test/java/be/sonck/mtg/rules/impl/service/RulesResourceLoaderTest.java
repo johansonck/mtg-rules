@@ -1,4 +1,4 @@
-package be.sonck;
+package be.sonck.mtg.rules.impl.service;
 
 import org.junit.Test;
 import org.springframework.core.io.InputStreamSource;
