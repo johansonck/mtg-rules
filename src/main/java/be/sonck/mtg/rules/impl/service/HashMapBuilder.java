@@ -1,6 +1,6 @@
 package be.sonck.mtg.rules.impl.service;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class HashMapBuilder<K, V> {
 
-    private final Map<K, V> map = new HashMap<>();
+    private final Map<K, V> map = new LinkedHashMap<>();
 
     public Map<K, V> build() {
         return map;

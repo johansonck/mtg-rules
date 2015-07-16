@@ -89,6 +89,14 @@ public class RulesParserTest {
         assertFalse(valueIterator.hasNext());
     }
 
+    @Test
+    public void test() {
+        Map<String, String> rules = rulesParser.getRules();
+        for (String key : rules.keySet()) {
+            System.out.println(key);
+        }
+    }
+
     private void validate(Map<String, String> map, String key, String expectedKey, String expectedValue) {
         assertThat(key, is(expectedKey));
         assertThat(map.get(key), is(expectedValue));
