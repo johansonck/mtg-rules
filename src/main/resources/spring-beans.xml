@@ -3,12 +3,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <!-- Bean declarations go here -->
-    <bean id="rulesResourceLoader" class="be.sonck.mtg.rules.impl.service.RulesResourceLoader"/>
-
-    <bean id="rulesResourceReader" class="be.sonck.mtg.rules.impl.service.RulesResourceReader">
-        <constructor-arg ref="rulesResourceLoader"/>
-    </bean>
-
     <bean id="rulesReader" class="java.io.InputStreamReader">
         <constructor-arg value="classpath:/MagicCompRules_20150327.txt" type="java.io.InputStream"/>
         <constructor-arg value="windows-1252" type="java.lang.String"/>
